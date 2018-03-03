@@ -1,0 +1,38 @@
+ {% load staticfiles %}
+
+<head>
+    <title>
+    </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/student.css' %}" />
+</head>
+
+<body>
+    <div id="root">
+        <div>
+            <div class="main-header">
+                <div>
+                    <a href="/">
+            <img src="{% static 'app/css/logo.png' %}">
+          </a>
+                </div>
+                <a href="/">
+                    <div class="project-name-div">Альтернативный дневник ученика</div>
+                </a>
+            </div>
+            <div class="logindiv">
+                <form class="form-signin" method="POST">
+                    {%csrf_token%}
+                    <h3 class="form-signin-heading">Аутентификация</h3>
+                    <label for="inputEmail" class="sr-only">Имя пользователя</label>
+                    <input type="username" name="username" id="inputEmail" class="form-control" placeholder="Имя пользователя" autofocus="">
+                    <label for="inputPassword" class="sr-only">Пароль</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Пароль">
+                    <button class="btn btn-primary type=" submit ">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>

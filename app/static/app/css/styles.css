@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: geometrialight;
+  background-color: #dee1e5;
+  font-size: 11pt;
+}
+
+@font-face
+{
+	font-family: geometriabold;
+	src:url('../css/Geometria-Bold.otf');
+
+}
+
+
+@font-face
+{
+	font-family: geometrialight;
+	src:url('../css/Geometria-Bold.otf');
+
+}
+.container{
+	width: 500px;
+}
+
+.main-header
+{	box-shadow: 0 0 3px rgba(0,0,0,0.5);
+	height: 90px;
+	background-color: white;
+	overflow: hidden;
+}
+.main-header img
+{
+	width: 80px;
+	margin: 6%;
+	background-color: white;
+}
+
+.main-header div
+{	
+	text-align: center;
+    vertical-align: middle;
+    line-height: 90px;
+	overflow: hidden;
+	height: 100%;;
+	display: inline-block;
+}
+
+.project-name-div{
+	font-family: geometriabold;
+	text-overflow: hidden;
+	width: 50%;
+	font-size: 22pt;
+	margin-left: 21%
+}
+
+.teacher-link-div{
+	
+	font-size: 12pt;
+	float: right;
+	margin-right: 2%;
+}
+/*Авторизация*/
+
+.logindiv
+{
+	height:280px;
+	width: 400px;
+	margin-left: 40%;
+	margin-top: 5%;
+	background-color: white;
+	box-shadow: 0 0 3px rgba(0,0,0,0.5);
+	padding: 1%;
+}
+
+input{
+	margin-bottom: 10px;
+	margin-top: 20px;
+}
+
+.calendar{
+	text-align: center;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	height: 30px;
+	width: 150px;
+
+}
+.form-signin-heading{
+	text-align: center;
+}

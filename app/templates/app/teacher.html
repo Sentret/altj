@@ -1,0 +1,203 @@
+ {% load staticfiles %} {% load staticfiles %} {% load return_item %}
+
+<head>
+    <title>
+    </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/student.css' %}" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <div>
+            <div class="main-header">
+                <div><a href="/"><img src="{% static 'app/css/logo.png' %}"></a></div>
+                <a href="/">
+                    <div class="project-name-div">Альтернативный дневник ученика</div>
+                </a>
+            </div>
+            <div>
+                <div id="top-bar" class="top-bar">
+                    <p class="student-name-paragraph">{{ user.first_name }} {{ user.last_name }}</p>
+                    <div class="period-controller">
+                        <div class="period-controller">
+                            <p>Выбрать дату:
+                                <input class='calendar' type="text" id="datepicker" onchange="calendarOnChange(event)" height="5">
+                            </p>
+                        </div>
+                        <!--   <button class="btn btn-primary" type="submit" onclick="newDateOnClick(event)">Новая дата</button>
+                        <button class="btn btn-primary" type="submit" onclick="findOnClick(event)">Найти</button>
+                        <select id='select' class="form-control period-controller" onchange="selectChanged(event)">
+                            {% for date in dates %}
+                            <option>{{date}}</option>
+                            {% endfor%}
+                        </select> -->
+                    </div>
+                </div>
+                <div class="con">
+                    <div id="side-bar" class="side-bar">
+                        <div>
+                            {% for student in students%}
+                            <div class="menu"> {{student.user.first_name}} </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="marks">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="result-tr">
+                                        <td>Имя</td>
+                                        <td>Аттестационные работы</td>
+                                        <td>Домашние задания и ведения тетради</td>
+                                        <td>Проектная деятельность</td>
+                                        <td>Работа на уроке</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key, value in marks.items%}
+                                    <tr class="result-tr">
+                                        <td id='{{key}}' class='name'>{{key}}</td>
+                                        <td id="ар@{{key}}" contenteditable=""> {{ value|return_item:'Аттестационные работы'}}</td>
+                                        <td id="дз@{{key}}" contenteditable=""> {{ value|return_item:'Домашние задания и ведения тетради'}}</td>
+                                        <td id="пд@{{key}}" contenteditable=""> {{ value|return_item:'Проектная деятельность'}}</td>
+                                        <td id="ру@{{key}}" contenteditable=""> {{ value|return_item:'Работа на уроке'}}</td>
+                                        {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% csrf_token %}
+                        <button class="btn btn-lg btn-primary" type="submit" onclick="saveOnClick(event)">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+
+    if (sessionStorage.getItem('date')) {
+        $("#datepicker").val(sessionStorage.getItem('date'))
+
+    }
+
+
+    function calendarOnChange(event) {
+
+        date = event.target.value;
+        sessionStorage.setItem('date', date)
+        changeDate();
+
+    }
+
+
+    // var temp = getCookie('date');
+    // if (temp) {
+    //     var mySelect = document.getElementById('select');
+
+    //     for (var i, j = 0; i = mySelect.options[j]; j++) {
+    //         if (i.value == temp) {
+    //             mySelect.selectedIndex = j;
+    //             break;
+    //         }
+    //     }
+
+    // } else {
+    //     var mySelect = document.getElementById('select');
+    //     document.cookie = "date=" + mySelect.options[0].value;
+    //     changeDate()
+    // }
+
+    // function getCookie(name) {
+
+    //     var matches = document.cookie.match(new RegExp(
+    //         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    //     ))
+    //     return matches ? decodeURIComponent(matches[1]) : undefined
+    // }
+
+    function changeDate() {
+        current_url = window.location.href
+
+        count = 0
+        index = 0
+        for (index = 0; index < current_url.length; index++) {
+            console.log(current_url[index])
+            if (current_url[index] == '/') {
+                count += 1;
+            }
+
+            if (count == 6) {
+                break;
+            }
+        }
+        window.location.href = window.location.href.substring(0, index + 1) + sessionStorage.getItem('date');
+
+    }
+
+    // function selectChanged(event) {
+
+
+
+
+    // }
+
+    // function findOnClick(event) {
+    //     changeDate()
+    // }
+
+    // function newDateOnClick(event) {
+    //     var today = new Date();
+    //     var dd = today.getDate();
+    //     var mm = today.getMonth() + 1;
+    //     var yyyy = today.getFullYear();
+
+    //     if (dd < 10) {
+    //         dd = '0' + dd
+    //     }
+
+    //     if (mm < 10) {
+    //         mm = '0' + mm
+    //     }
+
+    //     today = yyyy + '-' + mm + '-' + dd;
+
+    //     var x = document.getElementById("select");
+    //     var option = document.createElement("option");
+    //     option.text = today;
+    //     x.add(option);
+
+
+    // }
+
+    function saveOnClick(event) {
+        students = document.getElementsByClassName('name')
+        marks = {}
+        for (var i = 0; i < students.length; i++) {
+            student = students[i].id
+            marks[student] = {}
+            marks[student]['Аттестационные работы'] = document.getElementById('ар@' + student).innerText
+            marks[student]['Домашние задания и ведения тетради'] = document.getElementById('дз@' + student).innerText
+            marks[student]['Проектная деятельность'] = document.getElementById('пд@' + student).innerText
+            marks[student]['Работа на уроке'] = document.getElementById('ру@' + student).innerText
+
+        }
+
+        marks['date'] = sessionStorage.getItem('date')
+        console.log(JSON.stringify(marks))
+
+        var xhr = new XMLHttpRequest();
+
+
+        xhr.open('POST', 'http://127.0.0.1:8000/marks_api/{{subject}}/{{class_name}}/', true);
+        xhr.setRequestHeader("X-CSRFToken", document.getElementsByName('csrfmiddlewaretoken')[0].value);
+        xhr.send(JSON.stringify(marks))
+    }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+{% load staticfiles %} {% load return_item %}
+
+<head>
+    <title>
+    </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/student.css' %}" />
+</head>
+
+<body>
+    <noscript>
+        You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root">
+        <div>
+            <div class="main-header">
+                <div><a href="/"><img src="{% static 'app/css/logo.png' %}"></a></div>
+                <a href="/">
+                    <div class="project-name-div">Альтернативный дневник ученика</div>
+                </a>
+            </div>
+            <div>
+                <div id="top-bar" class="top-bar">
+                    <p class="student-name-paragraph">{{ user.first_name }} {{ user.last_name }}</p>
+                </div>
+                <div class="con">
+                    <div id="side-bar" class="side-bar">
+                        <div>
+                            {% for subject in subjects%}
+                            <a href="/student/{{subject.name}}/">
+                                <div class="menu"> {{subject.name}} </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div id="container">
+                        <div class="marks">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="result-tr">
+                                        <td>Дата</td>
+                                        <td>Аттестационные работы</td>
+                                        <td>Домашние задания и ведения тетради</td>
+                                        <td>Проектная деятельность</td>
+                                        <td>Работа на уроке</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key, value in marks.items%}
+                                    <tr class="result-tr">
+                                        <td>{{key}}</td>
+                                        <td> {{ value|return_item:'Аттестационные работы'}}</td>
+                                        <td> {{ value|return_item:'Домашние задания и ведения тетради'}}</td>
+                                        <td> {{ value|return_item:'Проектная деятельность'}}</td>
+                                        <td> {{ value|return_item:'Работа на уроке'}}</td>
+                                        {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
