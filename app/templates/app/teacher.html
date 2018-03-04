@@ -78,10 +78,12 @@
         </div>
     </div>
     <script>
+    
     $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 
-    if (sessionStorage.getItem('date')) {
+    if (sessionStorage.getItem('date') !=null) {
         $("#datepicker").val(sessionStorage.getItem('date'))
+        
 
     }
 
@@ -90,35 +92,9 @@
 
         date = event.target.value;
         sessionStorage.setItem('date', date)
-        changeDate();
+        changeDate()
 
     }
-
-
-    // var temp = getCookie('date');
-    // if (temp) {
-    //     var mySelect = document.getElementById('select');
-
-    //     for (var i, j = 0; i = mySelect.options[j]; j++) {
-    //         if (i.value == temp) {
-    //             mySelect.selectedIndex = j;
-    //             break;
-    //         }
-    //     }
-
-    // } else {
-    //     var mySelect = document.getElementById('select');
-    //     document.cookie = "date=" + mySelect.options[0].value;
-    //     changeDate()
-    // }
-
-    // function getCookie(name) {
-
-    //     var matches = document.cookie.match(new RegExp(
-    //         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    //     ))
-    //     return matches ? decodeURIComponent(matches[1]) : undefined
-    // }
 
     function changeDate() {
         current_url = window.location.href
@@ -136,43 +112,10 @@
             }
         }
         window.location.href = window.location.href.substring(0, index + 1) + sessionStorage.getItem('date');
+      
 
     }
 
-    // function selectChanged(event) {
-
-
-
-
-    // }
-
-    // function findOnClick(event) {
-    //     changeDate()
-    // }
-
-    // function newDateOnClick(event) {
-    //     var today = new Date();
-    //     var dd = today.getDate();
-    //     var mm = today.getMonth() + 1;
-    //     var yyyy = today.getFullYear();
-
-    //     if (dd < 10) {
-    //         dd = '0' + dd
-    //     }
-
-    //     if (mm < 10) {
-    //         mm = '0' + mm
-    //     }
-
-    //     today = yyyy + '-' + mm + '-' + dd;
-
-    //     var x = document.getElementById("select");
-    //     var option = document.createElement("option");
-    //     option.text = today;
-    //     x.add(option);
-
-
-    // }
 
     function saveOnClick(event) {
         students = document.getElementsByClassName('name')
@@ -193,7 +136,7 @@
         var xhr = new XMLHttpRequest();
 
 
-        xhr.open('POST', 'http://127.0.0.1:8000/marks_api/{{subject}}/{{class_name}}/', true);
+        xhr.open('POST', '/marks_api/{{subject}}/{{class_name}}/', true);
         xhr.setRequestHeader("X-CSRFToken", document.getElementsByName('csrfmiddlewaretoken')[0].value);
         xhr.send(JSON.stringify(marks))
     }

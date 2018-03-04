@@ -30,9 +30,7 @@ def main_page(request):
 
             if user.is_teacher:               
                 return redirect('/teacher/')
-        else:
-            
-        	return HttpResponse("Неверный логин или пароль")
+        return HttpResponse("Неверный логин или пароль")
                         
     else:       
         return render(request,'app/main.html')
@@ -61,34 +59,6 @@ def teacher_mark_list(request, subject, class_name, date=''):
         query = Mark.objects.filter(teacher=request.user.teacher, subject__name = subject,date__range = [date,date])
     else:
         query = []
-
-    # #фильтруем список оценок
-    # query2 = []   
-    # for q in query:
-    #     if str(q.date) == date:
-    #         query2.append(q)
-
-    # query = query2
-    # marks = {}
-
-
-    # if (len(query) ==0 and date !=''):
-    #     for student in students:
-    #         new_mark = Mark.objects.create(value='0', name='Аттестационные работы',student=student, subject=subj,teacher = request.user.teacher)
-    #         new_mark.date = datetime.strptime(date, "%Y-%m-%d").date()
-    #         new_mark.save()
-    #         print(new_mark.date)
-                
-    #         key = str(student.user.first_name + ' '+student.user.last_name )
-            
-    #         if key in marks:
-    #             marks[key]['Аттестационные работы'] = ''
-
-                       
-    #         else:
-    #             marks[key] = {}
-
-    #             marks[key]['Аттестационные работы'] = ''
  
 
     marks = {}
@@ -121,6 +91,7 @@ def marks_api(request,subject,class_name):
     if not request.user.is_teacher:
         return HttpResponseForbidden()
 
+    print('date')
     data = json.loads(request.body)
     date = data['date']
     marks = Mark.objects.filter(subject__name=subject, subject__class_name__name=class_name, date__range = [date,date]) 

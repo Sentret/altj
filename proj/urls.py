@@ -10,5 +10,5 @@ urlpatterns = [
     path('teacher/<subject>/<class_name>/',views.teacher_mark_list),
     path('teacher/<subject>/<class_name>/<date>',views.teacher_mark_list),
     path('student/', views.student_main_view),
-    path('student/<subject>/', views.student_main_view),
+    path('student/<subject_name>/', views.student_main_view),
 ]
