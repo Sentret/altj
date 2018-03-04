@@ -1,4 +1,4 @@
- {% load staticfiles %} {% load staticfiles %} {% load return_item %}
+  {% load staticfiles %} {% load staticfiles %} {% load return_item %}
 
 <head>
     <title>
@@ -29,13 +29,6 @@
                                 <input class='calendar' type="text" id="datepicker" onchange="calendarOnChange(event)" height="5">
                             </p>
                         </div>
-                        <!--   <button class="btn btn-primary" type="submit" onclick="newDateOnClick(event)">Новая дата</button>
-                        <button class="btn btn-primary" type="submit" onclick="findOnClick(event)">Найти</button>
-                        <select id='select' class="form-control period-controller" onchange="selectChanged(event)">
-                            {% for date in dates %}
-                            <option>{{date}}</option>
-                            {% endfor%}
-                        </select> -->
                     </div>
                 </div>
                 <div class="con">
@@ -78,20 +71,17 @@
         </div>
     </div>
     <script>
-    
+    date = "{{date}}"
     $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 
-    if (sessionStorage.getItem('date') !=null) {
-        $("#datepicker").val(sessionStorage.getItem('date'))
-        
+    $("#datepicker").val(date)
 
-    }
+
 
 
     function calendarOnChange(event) {
 
         date = event.target.value;
-        sessionStorage.setItem('date', date)
         changeDate()
 
     }
@@ -102,7 +92,7 @@
         count = 0
         index = 0
         for (index = 0; index < current_url.length; index++) {
-            console.log(current_url[index])
+
             if (current_url[index] == '/') {
                 count += 1;
             }
@@ -111,8 +101,10 @@
                 break;
             }
         }
-        window.location.href = window.location.href.substring(0, index + 1) + sessionStorage.getItem('date');
-      
+
+
+        window.location.href = window.location.href.substring(0, index + 1) + date;
+
 
     }
 
@@ -130,15 +122,12 @@
 
         }
 
-        marks['date'] = sessionStorage.getItem('date')
-        console.log(JSON.stringify(marks))
-
+        marks['date'] = date
         var xhr = new XMLHttpRequest();
-
-
         xhr.open('POST', '/marks_api/{{subject}}/{{class_name}}/', true);
         xhr.setRequestHeader("X-CSRFToken", document.getElementsByName('csrfmiddlewaretoken')[0].value);
         xhr.send(JSON.stringify(marks))
+
     }
     </script>
 </body>

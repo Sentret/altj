@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 import json
-from datetime import datetime
+import datetime
 
 
 def main_page(request):
@@ -55,13 +55,17 @@ def teacher_mark_list(request, subject, class_name, date=''):
     students = Student.objects.filter(_class__name=class_name)
     subj = Subject.objects.filter(name=subject, class_name=students[0]._class)[0]
 
+
+
     if(date !=''):
         query = Mark.objects.filter(teacher=request.user.teacher, subject__name = subject,date__range = [date,date])
     else:
-        query = []
+        date = datetime.date.today()
+        query = Mark.objects.filter(teacher=request.user.teacher, subject__name = subject,date= date)
  
-
+    print(date)
     marks = {}
+
     # группирует вот так {'John Doe': {'Работа на уроке': '4', 'Аттестационные работы': '5'}}
     for q in query:
         key = str(q.student.user.first_name + ' '+q.student.user.last_name )
@@ -82,7 +86,7 @@ def teacher_mark_list(request, subject, class_name, date=''):
         if key not in marks:
             marks[key] = {}
 
-    return render(request,'app/teacher.html', {'user':request.user,'marks':marks, 'subject':subject,'class_name':class_name})
+    return render(request,'app/teacher.html', {'user':request.user,'marks':marks, 'subject':subject,'class_name':class_name, 'date':str(date)})
 
 
 @login_required
@@ -108,7 +112,7 @@ def marks_api(request,subject,class_name):
         
         #редактирования существующих оценок
         for m in student_marks:
-            m.value = mark[m.name]
+            m.value = mark.get(m.name,'')
             m.save()
             mark.pop(m.name, None)
 
@@ -116,7 +120,7 @@ def marks_api(request,subject,class_name):
         for key, value in mark.items():
             if value !='':
                 new_mark = Mark.objects.create(value=value, name=key,student=student_user, subject=subj,teacher = request.user.teacher)
-                new_mark.date = datetime.strptime(date, "%Y-%m-%d").date()
+                new_mark.date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
                 new_mark.save()
             
     return HttpResponse('OK')
@@ -129,12 +133,13 @@ def student_main_view(request, subject_name=''):
 
     student = request.user.student
     _class = student._class
-    subjects = Subject.objects.filter(class_name = _class)
+    subjects = Subject.objects.filter(class_name = _class).order_by('name')
 
+    #пользователь заходит первый раз, выбирается первый предмет из списка
     if (subject_name==''):
         subject_name = subjects[0].name
 
-    query = Mark.objects.filter(student=student, subject__name=subject_name)
+    query = Mark.objects.filter(student=student, subject__name=subject_name).order_by('date')
     marks = {}
     # группирует вот так {'YYYY-MM-DD': {'Работа на уроке': '4', 'Аттестационные работы': '5'}}
     for q in query:
