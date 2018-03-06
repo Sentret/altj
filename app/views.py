@@ -95,7 +95,7 @@ def marks_api(request,subject,class_name):
     if not request.user.is_teacher:
         return HttpResponseForbidden()
 
-    print('date')
+
     data = json.loads(request.body)
     date = data['date']
     marks = Mark.objects.filter(subject__name=subject, subject__class_name__name=class_name, date__range = [date,date]) 
@@ -140,10 +140,13 @@ def student_main_view(request, subject_name=''):
         subject_name = subjects[0].name
 
     query = Mark.objects.filter(student=student, subject__name=subject_name).order_by('date')
-    config = subjects[0].subject_config
-
+    
+    config = 0
     marks = {}
     # группирует вот так {'YYYY-MM-DD': {'Работа на уроке': '4', 'Аттестационные работы': '5'}}
+    if (len(query) > 0):
+        config = subjects[0].subjectconfig
+
     for q in query:
         key = str(q.date)
         if key in marks:
@@ -154,5 +157,6 @@ def student_main_view(request, subject_name=''):
 
             marks[key][q.name] = q.value
 
-    print(marks)
     return render(request,'app/student.html', {'user':request.user,'subjects':subjects, 'marks':marks,'config':config})
+
+

@@ -41,7 +41,7 @@
                     </div>
                     <div>
                         <div class="marks">
-                            <table class="table table-bordered">
+                            <table id="table" class="table table-bordered">
                                 <thead>
                                     <tr class="result-tr">
                                         <td>Имя</td>
@@ -54,11 +54,11 @@
                                 <tbody>
                                     {% for key, value in marks.items%}
                                     <tr class="result-tr">
-                                        <td id='{{key}}' class='name'>{{key}}</td>
-                                        <td id="ар@{{key}}" contenteditable=""> {{ value|return_item:'Аттестационные работы'}}</td>
-                                        <td id="дз@{{key}}" contenteditable=""> {{ value|return_item:'Домашние задания и ведения тетради'}}</td>
-                                        <td id="пд@{{key}}" contenteditable=""> {{ value|return_item:'Проектная деятельность'}}</td>
-                                        <td id="ру@{{key}}" contenteditable=""> {{ value|return_item:'Работа на уроке'}}</td>
+                                        <td class='name'>{{key}}</td>
+                                        <td contenteditable=""> {{ value|return_item:'Аттестационные работы'}}</td>
+                                        <td contenteditable=""> {{ value|return_item:'Домашние задания и ведения тетради'}}</td>
+                                        <td contenteditable=""> {{ value|return_item:'Проектная деятельность'}}</td>
+                                        <td contenteditable=""> {{ value|return_item:'Работа на уроке'}}</td>
                                         {% endfor %}
                                         
                                 </tbody>
@@ -109,15 +109,18 @@
 
 
     function saveOnClick(event) {
-        students = document.getElementsByClassName('name')
+        var table = document.getElementById("table")
+        rows = table.getElementsByTagName("tr")
         marks = {}
-        for (var i = 0; i < students.length; i++) {
-            student = students[i].id
+
+        for (var i = 1; i < rows.length; i++) {
+            columns = rows[i].getElementsByTagName("td")
+            student = columns[0].innerText
             marks[student] = {}
-            marks[student]['Аттестационные работы'] = document.getElementById('ар@' + student).innerText
-            marks[student]['Домашние задания и ведения тетради'] = document.getElementById('дз@' + student).innerText
-            marks[student]['Проектная деятельность'] = document.getElementById('пд@' + student).innerText
-            marks[student]['Работа на уроке'] = document.getElementById('ру@' + student).innerText
+            marks[student]['Аттестационные работы'] = columns[1].innerText
+            marks[student]['Домашние задания и ведения тетради'] = columns[2].innerText
+            marks[student]['Проектная деятельность'] = columns[3].innerText
+            marks[student]['Работа на уроке'] = columns[4].innerText
 
         }
 

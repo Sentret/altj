@@ -1,4 +1,4 @@
- {% load staticfiles %} {% load staticfiles %} {% load return_item %}
+ {% load staticfiles %} {% load return_item %}
 
 <head>
     <title>
@@ -6,13 +6,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/student.css' %}" />
+
 </head>
 
 <body>
-    <noscript>
-        You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root">
+   <div id="root">
         <div>
             <div class="main-header">
                 <div><a href="/"><img src="{% static 'app/css/logo.png' %}"></a></div>
@@ -30,12 +28,13 @@
                         <a href="/teacher/{{subject.name}}/{{subject.class_name.name}}">
                             <div class="menu"> {{subject.class_name.name}} {{subject.name}} </div>
                         </a>
+                        
                         {% endfor %}
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+            <script>
+            </script>
 </body>
 
 </html>
