@@ -36,33 +36,75 @@
                     </div>
                     <div id="container">
                         <div class="marks">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr class="result-tr">
-                                        <td>Дата</td>
-                                        <td>Аттестационные работы</td>
-                                        <td>Домашние задания и ведения тетради</td>
-                                        <td>Проектная деятельность</td>
-                                        <td>Работа на уроке</td>
-                                    </tr>
-                                </thead>
+                            <table id='table' class="table table-bordered">
+                        
                                 <tbody>
+                                <tr class="result-tr">
+                                        <td>Дата</td>
+                                        <td colspan="2">Аттестационные работы</td>
+                                        <td colspan="2">Домашние задания и ведения тетради</td>
+                                        <td colspan="2">Проектная деятельность</td>
+                                        <td colspan="2">Работа на уроке</td>
+                                    </tr>
                                     {% for key, value in marks.items%}
                                     <tr class="result-tr">
                                         <td>{{key}}</td>
                                         <td> {{ value|return_item:'Аттестационные работы'}}</td>
+                                        <td></td>
                                         <td> {{ value|return_item:'Домашние задания и ведения тетради'}}</td>
+                                        <td></td>
                                         <td> {{ value|return_item:'Проектная деятельность'}}</td>
+                                        <td></td>
                                         <td> {{ value|return_item:'Работа на уроке'}}</td>
+                                        <td></td>
                                         {% endfor %}
+                                    </tr>
+                                    <tr class="result-tr">
+                                        <td>Итог</td>
+                                        <td colspan="2"></td>
+                                        <td colspan="2"></td>
+                                        <td colspan="2"</td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                      
                                 </tbody>
                             </table>
                         </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+
+    var max_mark = 10;
+
+    var table = document.getElementById("table")
+    rows = table.getElementsByTagName("tr")
+    var columns = null
+    var sums = [0,0,0,0]
+    for(var i = 1; i < rows.length - 1; i++){
+        columns = rows[i].getElementsByTagName("td")
+        for (var j  = 0; j < 4; j++){
+            num = parseInt(columns[j*2 + 1].innerText, 10)
+
+            sums[j] += isNaN(num) ? 0: num
+            console.log(sums[j])
+        }
+     
+    }
+
+    final_row = rows[rows.length - 1]
+    columns = final_row.getElementsByTagName('td')
+    total_sum = sums.reduce((a, b) => a + b, 0)
+    columns[0].innerText = 'Итог: '+ total_sum + '/' + (rows.length - 2)* max_mark * 4 ;
+
+    for (var i = 1; i < columns.length; i++) {
+        columns[i].innerText=sums[i-1]+'/'+ (rows.length - 2)*max_mark
+    }
+    console.log(sums)
+    </script>
 </body>
 
 </html>
