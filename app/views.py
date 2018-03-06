@@ -68,7 +68,7 @@ def teacher_mark_list(request, subject, class_name, date=''):
 
     # группирует вот так {'John Doe': {'Работа на уроке': '4', 'Аттестационные работы': '5'}}
     for q in query:
-        key = str(q.student.user.first_name + ' '+q.student.user.last_name )
+        key = str(q.student.user.last_name+ ' '+ q.student.user.first_name )
         
         if key in marks:
             marks[key][q.name] = q.value
@@ -82,7 +82,7 @@ def teacher_mark_list(request, subject, class_name, date=''):
 
     #добавляет учеников без оценок в список
     for student in students:
-        key = str(student.user.first_name + ' '+student.user.last_name )
+        key = str(student.user.last_name + ' '+ student.user.first_name)
         if key not in marks:
             marks[key] = {}
 
@@ -105,7 +105,7 @@ def marks_api(request,subject,class_name):
     #проходимся по полученному json и сохраняем изменения в бд
     for student, mark in data.items():
         student_name = student.split(' ')
-        student_user = Student.objects.filter(user__first_name=student_name[0], user__last_name=student_name[1])[0]
+        student_user = Student.objects.filter(user__first_name=student_name[1], user__last_name=student_name[0])[0]
         subj = Subject.objects.filter(class_name__name=student_user._class.name, name = subject)[0]
         
         student_marks = marks.filter(student=student_user)

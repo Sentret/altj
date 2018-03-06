@@ -1,4 +1,4 @@
-  {% load staticfiles %} {% load staticfiles %} {% load return_item %}
+ {% load staticfiles %} {% load staticfiles %} {% load return_item %}
 
 <head>
     <title>
@@ -60,6 +60,7 @@
                                         <td id="пд@{{key}}" contenteditable=""> {{ value|return_item:'Проектная деятельность'}}</td>
                                         <td id="ру@{{key}}" contenteditable=""> {{ value|return_item:'Работа на уроке'}}</td>
                                         {% endfor %}
+                                        
                                 </tbody>
                             </table>
                         </div>
@@ -71,12 +72,10 @@
         </div>
     </div>
     <script>
+
     date = "{{date}}"
     $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-
     $("#datepicker").val(date)
-
-
 
 
     function calendarOnChange(event) {
