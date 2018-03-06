@@ -9,16 +9,14 @@
 </head>
 
 <body>
-    <noscript>
-        You need to enable JavaScript to run this app.
-    </noscript>
+ 
     <div id="root">
         <div>
             <div class="main-header">
-                <div><a href="/"><img src="{% static 'app/css/logo.png' %}"></a></div>
-                <a href="/">
+                <div><img src="{% static 'app/css/logo.png' %}"></div>
+                
                     <div class="project-name-div">Альтернативный дневник ученика</div>
-                </a>
+                
             </div>
             <div>
                 <div id="top-bar" class="top-bar">
@@ -42,7 +40,7 @@
                                 <tr class="result-tr">
                                         <td>Дата</td>
                                         <td colspan="2">Аттестационные работы</td>
-                                        <td colspan="2">Домашние задания и ведения тетради</td>
+                                        <td colspan="2">Домашние задание и ведение тетради</td>
                                         <td colspan="2">Проектная деятельность</td>
                                         <td colspan="2">Работа на уроке</td>
                                     </tr>
@@ -63,7 +61,7 @@
                                         <td>Итог</td>
                                         <td colspan="2"></td>
                                         <td colspan="2"></td>
-                                        <td colspan="2"</td>
+                                        <td colspan="2"></td>
                                         <td colspan="2"></td>
                                     </tr>
                                       
@@ -78,19 +76,59 @@
     </div>
     <script>
 
-    var max_mark = 10;
 
+    var max_mark = {{config.max_value}};
+    excel_min_value = {{config.excel_min_value}};
+    good_min_value = {{config.good_min_value}};
+    satis_min_value = {{config.satis_min_value}};
+
+
+    console.log(max_mark)
     var table = document.getElementById("table")
     rows = table.getElementsByTagName("tr")
     var columns = null
     var sums = [0,0,0,0]
+
+    //перевод оценок в пятибалльную
+    for(var i = 1; i < rows.length - 1; i++){
+        columns = rows[i].getElementsByTagName("td")
+        for (var j  = 1; j < 5; j++){
+            
+            var mark = parseInt(columns[j*2 -1].innerText, 10)
+            if (isNaN(mark))
+            {
+                continue
+            }
+            if (mark >= excel_min_value)
+            {
+                columns[j*2].innerText = 'отлично'
+                continue
+            }
+            if (mark >= good_min_value)
+            {
+                columns[j*2].innerText = 'хорошо'
+                continue
+            }
+            if (mark >= satis_min_value)
+            {
+                columns[j*2].innerText = 'удовл'
+                continue
+            }
+            columns[j*2].innerText  = 'неуд'
+            
+
+        }
+     
+    }
+
+
+    // считаем сумму оценок по столбам и складываем в переменную sums
     for(var i = 1; i < rows.length - 1; i++){
         columns = rows[i].getElementsByTagName("td")
         for (var j  = 0; j < 4; j++){
             num = parseInt(columns[j*2 + 1].innerText, 10)
-
             sums[j] += isNaN(num) ? 0: num
-            console.log(sums[j])
+            
         }
      
     }
@@ -103,7 +141,9 @@
     for (var i = 1; i < columns.length; i++) {
         columns[i].innerText=sums[i-1]+'/'+ (rows.length - 2)*max_mark
     }
-    console.log(sums)
+
+
+
     </script>
 </body>
 

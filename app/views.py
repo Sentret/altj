@@ -140,6 +140,8 @@ def student_main_view(request, subject_name=''):
         subject_name = subjects[0].name
 
     query = Mark.objects.filter(student=student, subject__name=subject_name).order_by('date')
+    config = subjects[0].subject_config
+
     marks = {}
     # группирует вот так {'YYYY-MM-DD': {'Работа на уроке': '4', 'Аттестационные работы': '5'}}
     for q in query:
@@ -153,4 +155,4 @@ def student_main_view(request, subject_name=''):
             marks[key][q.name] = q.value
 
     print(marks)
-    return render(request,'app/student.html', {'user':request.user,'subjects':subjects, 'marks':marks})
+    return render(request,'app/student.html', {'user':request.user,'subjects':subjects, 'marks':marks,'config':config})
