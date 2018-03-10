@@ -3,17 +3,17 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 from .models import Student
 from .models import Teacher
-from .models import SubjectConfig
+
 from .models import Subject
 from .models import Class
 from .models import Mark
-from .models import SubjectConfig
+
 
 
 admin.site.register(CustomUser,UserAdmin)
 admin.site.register(Student)
 admin.site.register(Teacher)
 admin.site.register(Subject)
-admin.site.register(SubjectConfig)
+
 admin.site.register(Class)
 admin.site.register(Mark)

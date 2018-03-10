@@ -19,8 +19,6 @@ def main_page(request):
         password = request.POST['password']
 
         user = auth.authenticate(username=username, password=password)
-        print(user.is_student)
-        print(user.is_teacher)
         #проверяем что пользователь не NONE
         if user:
             auth.login(request, user)
@@ -130,6 +128,8 @@ def marks_api(request,subject,class_name):
 @login_required
 def student_main_view(request, subject_name=''):
     
+    if not request.user.is_student:
+        return HttpResponseForbidden()
 
     student = request.user.student
     _class = student._class
@@ -145,7 +145,7 @@ def student_main_view(request, subject_name=''):
     marks = {}
     # группирует вот так {'YYYY-MM-DD': {'Работа на уроке': '4', 'Аттестационные работы': '5'}}
     if (len(query) > 0):
-        config = subjects[0].subjectconfig
+        config = subjects[0]
 
     for q in query:
         key = str(q.date)
